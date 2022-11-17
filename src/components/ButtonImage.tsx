@@ -1,34 +1,40 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Dimensions, Image, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useState, useEffect } from 'react';
+import { PairContext, PairState } from '../context/PairContext/PairContext';
 
 interface Props {
-    uri: string,
-    isPair: boolean,
+    image: string,
     id: number,
-    idImage: number
-    idImage2: number
-    onPress : Function
 }
 
 const widthScreen = Dimensions.get('screen').width
 
-const ButtonImage = ({uri,isPair,id, idImage,idImage2,onPress}:Props) => {
+const ButtonImage = ({image,id}:Props) => {
 
     const [opacity, setOpacity] = useState(1);
+    const [uri, setUri] = useState(image);
+
+    const {pairState, setPair} = useContext(PairContext)
 
     useEffect(() => {
-        console.log(idImage, id)
-        if(!isPair && (idImage === id || idImage2 === id)){
+        if(!pairState.isPair && pairState.areTwo &&
+            (pairState.tempId === id || pairState.idImage2 === id)){
             setOpacity(1)
-            console.log('Entro')
         }
-    },[isPair])
+    },[pairState])
+
+    useEffect(() => {
+        setTimeout(() => {
+            setUri('https://www.citypng.com/public/uploads/preview/question-mark-button-black-and-gray-silver-11580986864wdvdbthc6m.png')
+        },1500)
+    },[])
+
   return (
     <TouchableOpacity
         onPress={() => {
-            onPress(id)
+            setPair(id)
             setOpacity(0.5);
         }}
     >
