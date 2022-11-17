@@ -22,20 +22,26 @@ const ButtonImage = ({image,id}:Props) => {
         if(!pairState.isPair && pairState.areTwo &&
             (pairState.tempId === id || pairState.idImage2 === id)){
             setOpacity(1)
+            timeOutQuestion(500);
         }
     },[pairState])
 
     useEffect(() => {
+       timeOutQuestion(4000);
+    },[])
+
+    const timeOutQuestion = (time:number) => {
         setTimeout(() => {
             setUri('https://www.citypng.com/public/uploads/preview/question-mark-button-black-and-gray-silver-11580986864wdvdbthc6m.png')
         },1500)
-    },[])
+    }
 
   return (
     <TouchableOpacity
         onPress={() => {
             setPair(id)
             setOpacity(0.5);
+            setUri(image)
         }}
     >
         <Image

@@ -3,6 +3,7 @@ import React from 'react'
 import { Modal, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RootStackParams } from '../navigator/Navigator';
+import { styles } from '../Theme/appTheme';
 
 
 interface Props{
@@ -19,13 +20,13 @@ const ModalEnd = ({isOpen, goBack}:Props) => {
       transparent={true}
     >
       <View style={styles.modal}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Congratulations</Text>
-          <Text style={styles.subtitle}>You Won</Text>
-          <TouchableOpacity style={styles.button}
+        <View style={styles.modalcontainer}>
+          <Text style={stylesModal.title}>Congratulations</Text>
+          <Text style={stylesModal.subtitle}>You Won</Text>
+          <TouchableOpacity style={stylesModal.button}
             onPress={() => goBack()}
           >
-            <Text style={styles.buttonTitle}>Go back</Text>
+            <Text style={stylesModal.buttonTitle}>Go back</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -33,7 +34,7 @@ const ModalEnd = ({isOpen, goBack}:Props) => {
   )
 }
 
-const styles = StyleSheet.create({
+const stylesModal = StyleSheet.create({
     modal:{
       backgroundColor: 'rgba(0,0,0,0.3)',
       justifyContent: 'center',
