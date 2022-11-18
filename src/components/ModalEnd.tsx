@@ -8,11 +8,13 @@ import { styles } from '../Theme/appTheme';
 
 interface Props{
   isOpen: boolean,
-  goBack: Function
+  goBack: Function,
+  title: string,
+  description: string
 }
 
 
-const ModalEnd = ({isOpen, goBack}:Props) => {
+const ModalEnd = ({isOpen, goBack, title, description}:Props) => {
   return (
     <Modal
       animationType='slide'
@@ -21,8 +23,8 @@ const ModalEnd = ({isOpen, goBack}:Props) => {
     >
       <View style={styles.modal}>
         <View style={styles.modalcontainer}>
-          <Text style={stylesModal.title}>Congratulations</Text>
-          <Text style={stylesModal.subtitle}>You Won</Text>
+          <Text style={stylesModal.title}>{title}</Text>
+          <Text style={stylesModal.subtitle}>{description}</Text>
           <TouchableOpacity style={stylesModal.button}
             onPress={() => goBack()}
           >

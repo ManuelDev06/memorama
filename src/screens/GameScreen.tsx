@@ -7,21 +7,27 @@ import  {useImages}  from '../hooks/useImages';
 import ButtonImage from '../components/ButtonImage';
 import { PairContext } from '../context/PairContext/PairContext';
 import ModalEnd from '../components/ModalEnd';
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
+import { ThemeContext } from '../context/themeContext/ThemeContext';
 
 interface Props extends StackScreenProps<RootStackParams, 'GameScreen'>{}
 
 const GameScreen = ({route,navigation}:Props) => {
   
-  const {mode,limit} = route.params
+  const {mode,limit,time} = route.params
 
   const [modal,setModal] = useState(false)
-
+  const [title, setTitle] = useState('');
+  const [description,setDescription] = useState('')
   const {images} = useImages(limit);
 
   const {pairState,reset} = useContext(PairContext)
+  const {theme:{colors}} = useContext(ThemeContext)
 
   useEffect(() => {
     if(pairState.counter === limit){
+      setTitle('Congratulations')
+      setDescription('You won')
       setModal(true);
     }
   },[pairState.counter])
@@ -35,13 +41,36 @@ const GameScreen = ({route,navigation}:Props) => {
     navigation.navigate('HomeScreen')
   }
   
+  const children = ({ remainingTime }:{remainingTime:number}) => {
+    const minutes = Math.floor(remainingTime / 60)
+    const seconds = remainingTime % 60
+  
+    return <Text style={{color: colors.text}}>{minutes} : {seconds}</Text>
+  }
+  
   return (
     <SafeAreaView style={{flex:1}}>
       <SwitchCustom
         title={mode}
       />
       <View style={{alignItems:'center', flex:1, justifyContent: 'center'}}>
-          <Text style={styles.counter}>{pairState.counter} / {limit}</Text>
+          {(time)
+            ?<CountdownCircleTimer
+              isPlaying
+              duration={time!}
+              colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+              colorsTime={[7, 5, 2, 0]}
+              onComplete={() => {
+                setTitle('You Lose')
+                setDescription('You dont complete the challenge')
+                setModal(true);
+              }}
+            >
+                {children}
+            </CountdownCircleTimer>
+            :null
+          }
+          <Text style={{...styles.counter, color: colors.text}}>{pairState.counter} / {limit}</Text>
           <View
             style={styles.container}
           >
@@ -54,7 +83,7 @@ const GameScreen = ({route,navigation}:Props) => {
             ))}
           </View>
       </View>
-      <ModalEnd isOpen={modal} goBack={goBack}/>
+      <ModalEnd isOpen={modal} goBack={goBack} title={title} description={description}/>
     </SafeAreaView>
   )
 }

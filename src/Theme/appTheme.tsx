@@ -21,14 +21,15 @@ export const styles = StyleSheet.create({
         flex:1
       },
       modalcontainer:{
-        width:250,
-        height:250,
+        width:300,
+        height:300,
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
         shadowOffset: {
           width: 0,
           height: 10
-        }
+        },
+        borderRadius: 15
     }
 });

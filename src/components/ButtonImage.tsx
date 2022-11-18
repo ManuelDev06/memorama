@@ -15,7 +15,8 @@ const ButtonImage = ({image,id}:Props) => {
 
     const [opacity, setOpacity] = useState(1);
     const [uri, setUri] = useState(image);
-
+    const [block, setBlock] = useState(true)
+    const [activeOpacity, setActiveOpacity] = useState(0.5)
     const {pairState, setPair} = useContext(PairContext)
 
     useEffect(() => {
@@ -23,26 +24,34 @@ const ButtonImage = ({image,id}:Props) => {
             (pairState.tempId === id || pairState.idImage2 === id)){
             setOpacity(1)
             timeOutQuestion(500);
+            setBlock(false);
+            setActiveOpacity(1)
         }
     },[pairState])
 
     useEffect(() => {
-       timeOutQuestion(4000);
+       timeOutQuestion(10000);
     },[])
 
     const timeOutQuestion = (time:number) => {
         setTimeout(() => {
+            setBlock(false);
             setUri('https://www.citypng.com/public/uploads/preview/question-mark-button-black-and-gray-silver-11580986864wdvdbthc6m.png')
-        },1500)
+        },time)
     }
 
   return (
     <TouchableOpacity
         onPress={() => {
-            setPair(id)
-            setOpacity(0.5);
-            setUri(image)
+            if(!block){
+                setPair(id)
+                setOpacity(0.5);
+                setUri(image)
+                setBlock(true)
+                setActiveOpacity(0)
+            }
         }}
+        activeOpacity={activeOpacity}
     >
         <Image
             source={{uri}}

@@ -5,17 +5,25 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { RootStackParams } from '../navigator/Navigator';
 
-interface Props {
-    title: string;
+interface ItemProps {
+    name: string;
     rules: string[];
     image: string;
     color: string;
     limit: number;
+    id: number;
+}
+
+interface Props {
+    item: ItemProps
+    onPress: (id:number,mode:string,limit:number) => void
 }
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParams, 'HomeScreen'>
 
-const ButtonLevel = ({color,title,rules,image,limit}:Props) => {
+const ButtonLevel = ({item,onPress}:Props) => {
+
+    const{color,name,limit,rules,image} = item
 
     const navigation = useNavigation<HomeScreenNavigationProp>();
 
@@ -25,10 +33,10 @@ const ButtonLevel = ({color,title,rules,image,limit}:Props) => {
             backgroundColor: color,
             ...styles.container
         }}
-        onPress={() => navigation.navigate('GameScreen',{mode: title, limit})}
+        onPress={() => onPress(item.id,item.name,item.limit)}
     >
         <View>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{name}</Text>
             <Text style={styles.rules}>Rules</Text>
             {rules.map((value) => (
                 <Text style={styles.rules}>   {value}</Text>

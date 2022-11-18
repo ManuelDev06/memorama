@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { StyleSheet, Switch, Text, View } from 'react-native';
+import { ThemeContext } from '../context/themeContext/ThemeContext';
 import { styles } from '../Theme/appTheme';
 
 interface Props {
@@ -8,13 +9,20 @@ interface Props {
 
 const SwitchCustom = ({title}:Props) => {
 
-    const [isDark, setIsDark] = useState(false)
+    const {theme:{colors,dark},setDarkTheme,setLightTheme} = useContext(ThemeContext)
 
+    const changeTheme = () => {
+        if(!dark)
+            setDarkTheme();
+        else
+            setLightTheme()
+    }
   return (
     <View style={stylesHeader.container}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={{...styles.title, color: colors.text}}>{title}</Text>
         <Switch
-            value={isDark}
+            value={dark}
+            onChange={changeTheme}
         />
     </View>
   )
